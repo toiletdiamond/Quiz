@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Computer Hardware and Software Quiz</title>
+<style>
+  body {
+    background-color: #dbeeff;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 25px;
+    border: 3px solid #3366cc;
+    border-radius: 10px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #1a3d7c;
+    font-size: 28px;
+  }
+
+  p.sub {
+    text-align: center;
+    color: #555;
+    margin-top: -5px;
+    font-size: 15px;
+  }
+
+  .question {
+    margin-top: 25px;
+    padding: 12px;
+    background-color: #f2f7ff;
+    border-left: 5px solid #3366cc;
+    border-radius: 5px;
+  }
+
+  .question p {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  label {
+    display: block;
+    margin: 4px 0;
+    cursor: pointer;
+  }
+
+  button {
+    display: block;
+    margin: 25px auto;
+    padding: 10px 25px;
+    background-color: #3366cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #254e99;
+  }
+
+  #result {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #1a3d7c;
+  }
+
+  .progress {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+
+  .navBtns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .navBtns button {
+    margin: 20px 0;
+  }
+
+  .correct {
+    color: green;
+    font-weight: bold;
+  }
+
+  .wrong {
+    color: red;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Computer Hardware & Software Quiz</h1>
+
+  <div class="progress" id="progress">Question 1 of 21</div>
+
+  <div class="question" id="questionBox">
+    <!-- question gets put here by JS -->
+  </div>
+
+  <div class="navBtns">
+    <button type="button" id="prevBtn" onclick="prevQuestion()">Back</button>
+    <button type="button" id="nextBtn" onclick="nextQuestion()">Next</button>
+    <button type="button" id="submitBtn" onclick="checkAnswers()" style="display:none;">Submit Quiz</button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  var questions = [
+    { q: "1. What does CPU stand for?", name: "q1", options: {a:"Central Process Unit", b:"Central Processing Unit", c:"Computer Processing Unit", d:"Central Processor Utility"}, correct: "b" },
+    { q: "2. Which of these is an input device?", name: "q2", options: {a:"Monitor", b:"Printer", c:"Keyboard", d:"Speaker"}, correct: "c" },
+    { q: "3. RAM is a type of...", name: "q3", options: {a:"Permanent storage", b:"Temporary/volatile memory", c:"Output device", d:"Operating system"}, correct: "b" },
+    { q: "4. Which one of these is NOT an operating system?", name: "q4", options: {a:"Windows", b:"macOS", c:"Linux", d:"Microsoft Word"}, correct: "d" },
+    { q: "5. What does GPU mainly handle?", name: "q5", options: {a:"Internet connection", b:"Graphics and images", c:"Sound", d:"Saving files"}, correct: "b" },
+    { q: "6. Which of these is considered software, not hardware?", name: "q6", options: {a:"Motherboard", b:"Hard drive", c:"Google Chrome", d:"Mouse"}, correct: "c" },
+    { q: "7. What is the main circuit board of a computer called?", name: "q7", options: {a:"Motherboard", b:"Sound board", c:"Graphics card", d:"Chipset"}, correct: "a" },
+    { q: "8. SSD stands for...", name: "q8", options: {a:"Solid State Drive", b:"Static Storage Device", c:"System Storage Drive", d:"Solid Speed Disk"}, correct: "a" },
+    { q: "9. Which of these stores data even when the computer is off?", name: "q9", options: {a:"RAM", b:"Cache", c:"Hard drive / SSD", d:"Register"}, correct: "c" },
+    { q: "10. What kind of software is Microsoft Excel?", name: "q10", options: {a:"Operating system", b:"Application software", c:"Firmware", d:"Driver"}, correct: "b" },
+    { q: "11. What does \"booting up\" a computer mean?", name: "q11", options: {a:"Deleting old files", b:"Starting the computer up", c:"Installing new software", d:"Connecting to wifi"}, correct: "b" },
+    { q: "12. Which port is commonly used to connect a lot of devices like flash drives?", name: "q12", options: {a:"HDMI", b:"USB", c:"Ethernet", d:"VGA"}, correct: "b" },
+    { q: "13. What is firmware?", name: "q13", options: {a:"Software permanently programmed into hardware", b:"A type of virus", c:"A social media app", d:"A type of monitor"}, correct: "a" },
+    { q: "14. Which of the following measures processor speed?", name: "q14", options: {a:"Gigahertz (GHz)", b:"Megabytes (MB)", c:"Decibels (dB)", d:"Pixels (px)"}, correct: "a" },
+    { q: "15. What does \"open source\" software mean?", name: "q15", options: {a:"It costs money", b:"Its source code is publicly available to view/change", c:"It only works offline", d:"It's made by Microsoft"}, correct: "b" },
+    { q: "16. Which of these is an output device?", name: "q16", options: {a:"Scanner", b:"Webcam", c:"Monitor", d:"Microphone"}, correct: "c" },
+    { q: "17. What does \"drivers\" mean in computer terms?", name: "q17", options: {a:"People who fix computers", b:"Software that helps hardware communicate with the OS", c:"A type of cable", d:"A backup file"}, correct: "b" },
+    { q: "18. Which unit is bigger?", name: "q18", options: {a:"1 Kilobyte", b:"1 Megabyte", c:"1 Gigabyte", d:"1 Byte"}, correct: "c" },
+    { q: "19. What is malware?", name: "q19", options: {a:"A type of hardware", b:"Harmful software made to damage/hack a system", c:"A brand of laptop", d:"A cooling fan"}, correct: "b" },
+    { q: "20. Which of these connects a computer to the internet using a physical cable?", name: "q20", options: {a:"Bluetooth", b:"Ethernet cable", c:"Infrared", d:"NFC"}, correct: "b" },
+    { q: "21. What's the purpose of an operating system?", name: "q21", options: {a:"To manage hardware and let software run on the computer", b:"To design websites", c:"To store printed documents", d:"To charge the battery"}, correct: "a" }
+  ];
+
+  var current = 0;
+  var userAnswers = {};
+
+  function renderQuestion() {
+    var item = questions[current];
+    var box = document.getElementById("questionBox");
+
+    var html = "<p>" + item.q + "</p>";
+    for (var key in item.options) {
+      var checked = userAnswers[item.name] === key ? "checked" : "";
+      html += '<label><input type="radio" name="' + item.name + '" value="' + key + '" ' + checked + ' onclick="selectAnswer(\'' + item.name + '\',\'' + key + '\')"> ' + item.options[key] + "</label>";
+    }
+    box.innerHTML = html;
+
+    document.getElementById("progress").innerText = "Question " + (current + 1) + " of " + questions.length;
+
+    document.getElementById("prevBtn").style.display = current === 0 ? "none" : "inline-block";
+    document.getElementById("nextBtn").style.display = current === questions.length - 1 ? "none" : "inline-block";
+    document.getElementById("submitBtn").style.display = current === questions.length - 1 ? "inline-block" : "none";
+
+    document.getElementById("result").innerHTML = "";
+  }
+
+  function selectAnswer(name, value) {
+    userAnswers[name] = value;
+  }
+
+  function nextQuestion() {
+    if (current < questions.length - 1) {
+      current++;
+      renderQuestion();
+    }
+  }
+
+  function prevQuestion() {
+    if (current > 0) {
+      current--;
+      renderQuestion();
+    }
+  }
+
+  function checkAnswers() {
+    var score = 0;
+    for (var i = 0; i < questions.length; i++) {
+      var item = questions[i];
+      if (userAnswers[item.name] === item.correct) {
+        score++;
+      }
+    }
+
+    document.getElementById("questionBox").innerHTML = "";
+    document.getElementById("progress").innerText = "";
+    document.getElementById("prevBtn").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("submitBtn").style.display = "none";
+
+    document.getElementById("result").innerHTML = "You got " + score + " out of " + questions.length + " right!";
+  }
+
+  renderQuestion();
+</script>
+
+</body>
+</html>
